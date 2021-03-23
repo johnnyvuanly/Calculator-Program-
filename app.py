@@ -33,4 +33,4 @@ def send(sum=sum):
 
 
 if __name__ == '__main__':
-    app.run(debug=True) # Turned on developer mode, shows us actual errors when they pop up
+    socketio.run(app, debug=True) # Turned on developer mode, shows us actual errors when they pop up
