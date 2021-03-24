@@ -4,10 +4,14 @@ from flask_socketio import SocketIO, send
 app = Flask(__name__)
 
 # Define secret key which is required for maintaining the sessions in the class
-# app.config['SECRET_KEY'] = 'secret'
-# Define session type, useful in communication with socket io
-# app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SECRET_KEY'] = 'secret'
+socketio = SocketIO(app)
 
+# This listens for particular event that I specify
+@socketio.on('message') 
+def handleMessage(msg):
+    send(msg, broadcast=True) # When a message comes in, broadcast it to everyone connected to the server at the moment
+    
 """ Home page which is our index file """
 @app.route('/', methods=['GET'])
 def index():
@@ -70,4 +74,4 @@ def operation_result():
 
 if __name__ == '__main__':
     app.debug = True # Turned on developer mode, shows us actual errors when they pop up
-    app.run() 
+    socketio.run(app) # socketio takes the Flask app, wraps around it and adds to the flask server
