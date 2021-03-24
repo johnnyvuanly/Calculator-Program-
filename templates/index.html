@@ -14,7 +14,10 @@
       #calc_btn {
         margin-top: 10px;
       }
-      h3 {
+      #reset_btn {
+        margin-top: 5px;
+      }
+      h1 {
         text-align: center;
         color: darkmagenta;
         font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -34,18 +37,19 @@
  
  <body>
      <div class="container">
-         <h3>Calculator App</h3>
+         <h1>Calculator App</h1>
      </div>
 
      <!-- Form -->
      <div class="container">
-        <form action="/send" method="POST">
+        <form action="{{ url_for('operation_result') }}" method="POST">
           <label for="Number One">First Number</label>
           <input
             type="text"
             placeholder="First Number"
             class="form-control"
             name="num1"
+            required
           />
   
           <label for="Number Two">Second Number</label>
@@ -54,27 +58,35 @@
             placeholder="Second Number"
             class="form-control"
             name="num2"
+            required
           />
   
           <label for="Operation">Operation</label>
           <select class="form-select" name="operation">
-            <option value="add">Add</option>
-            <option value="subtract">Subtract</option>
-            <option value="multiply">Multiply</option>
-            <option value="divide">Divide</option>
+            <option value="+">Add</option>
+            <option value="-">Subtract</option>
+            <option value="*">Multiply</option>
+            <option value="/">Divide</option>
           </select>
-          
+          <br/>
           <div class="d-grid gap-2">
             <input type="submit" class="btn btn-outline-success" value="Calculate" id="calc_btn"/>
           </div>
-          <br/>
-          
-          <div class="alert">
-              <!-- Double curly braces is like a print statement in Python for Flask. Pass in our prop basically -->
-              {{ sum }}
+          <div class="d-grid gap-2">
+            <input type="reset" class="btn btn-outline-danger" value="RESET" id="reset_btn"/>
           </div>
         </form>
-          
+        {% if calculation_success == True %}
+          <br/>
+          <ul>
+            <li>The calculation for {{input1}} {{operation}} {{input2}} is: {{result}}</li>
+          </ul>
+        {% endif %}
+        {% if calculation_success == False %}
+          <br/>
+          <p>{{error}}</p>
+          <p>{{input1}} {{operation}} {{input2}} = "{{result}}"</p>
+        {% endif %}
  </body>
 
 </html>

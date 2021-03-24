@@ -1,36 +1,73 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
+from flask_socketio import SocketIO, send
 
 app = Flask(__name__)
 
+# Define secret key which is required for maintaining the sessions in the class
+# app.config['SECRET_KEY'] = 'secret'
+# Define session type, useful in communication with socket io
+# app.config['SESSION_TYPE'] = 'filesystem'
+
 """ Home page which is our index file """
-@app.route('/')
-def home_page():
+@app.route('/', methods=['GET'])
+def index():
     return render_template('index.html')
 
 """ Form submission route """
-@app.route('/send', methods=['POST'])
-def send(sum=sum):
-    if request.method == 'POST':
-        # Start pulling data from Form input
-        num1 = request.form['num1']
-        num2 = request.form['num2']
-        operation = request.form['operation']
-        # Calculation IF Statements
-        if operation == 'add':
-            sum = float(num1) + float(num2)
-            return render_template('index.html', sum=sum) # basically passing in a prop like in Vue
-        elif operation == 'subtract':
-            sum = float(num1) - float(num2)
-            return render_template('index.html', sum=sum)
-        elif operation == 'multiply':
-            sum = float(num1) * float(num2)
-            return render_template('index.html', sum=sum)
-        elif operation == 'divide':
-            sum = float(num1) / float(num2)
-            return render_template('index.html', sum=sum)
-        else:
-            return render_template('index.html')
+@app.route('/operation_result', methods=['POST'])
+def operation_result():
+    error = None
+    result = None
+    
+    # request.form looks for:
+    # html tags with matching "name="
+    num1 = request.form['num1']
+    num2 = request.form['num2']
+    operation = request.form['operation']
 
+    try:
+        input1 = float(num1)
+        input2 = float(num2)
+
+        if operation == "+":
+            result = input1 + input2
+        elif operation == "-":
+            result = input1 - input2
+        elif operation == "/":
+            result = input1 / input2
+        else:
+            operation = "*"
+            result = input1 * input2
+
+        return render_template(
+            'index.html',
+            input1=input1,
+            input2=input2,
+            operation=operation,
+            result=result,
+            calculation_success=True
+        )
+    except ZeroDivisionError:
+        return render_template(
+            'index.html',
+            input1=input1,
+            input2=input2,
+            operation=operation,
+            result="Bad Input",
+            calculation_success=False,
+            error="You cannot divide by zero"
+        )
+    except ValueError:
+        return render_template(
+            'index.html',
+            input1=num1,
+            input2=num2,
+            operation=operation,
+            result="Bad Input",
+            calculation_success=False,
+            error="Cannot perform numeric operations with provided input"
+        )
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True) # Turned on developer mode, shows us actual errors when they pop up
+    app.debug = True # Turned on developer mode, shows us actual errors when they pop up
+    app.run() 
