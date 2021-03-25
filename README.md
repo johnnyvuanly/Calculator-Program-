@@ -11,10 +11,11 @@ run app.py
 (Windows) python app.py
 
 "If given more time I probably would have fixed the bugs and be able to display the top ten, latest calulations between users on the server
-This was my first time working with web sockets and it was way beyond my understanding after working with servers a few times, months ago
+This was my first time working with web sockets and it was way beyond my understanding after working with servers a few times, months ago. In any case,
+proud of what I was able to accomplish after 2 days of studying web sockets."
 I am aware of the bugs like
 -new li printing before after user has connected
 -how the other users calculations does not show on the other end
 -Most recent calculations do print after calculating more operations
--Top ten most recent calculations dont display
+-Top ten most recent calculations dont display"
 
