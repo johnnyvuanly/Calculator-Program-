@@ -10,6 +10,7 @@ socketio = SocketIO(app)
 # This listens for particular event that I specify
 @socketio.on('message') 
 def handleMessage(msg):
+    print('Message: ' + msg)
     send(msg, broadcast=True) # When a message comes in, broadcast it to everyone connected to the server at the moment
     
 """ Home page which is our index file """

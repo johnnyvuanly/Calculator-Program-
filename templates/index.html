@@ -48,7 +48,7 @@ $(document).ready(function() {
   // Basically eventlistener for on click
   $('#calc_btn').on('click', function() {
     // Send the text of the input
-    socket.send($('').val());
+    socket.send($('#calculation').text());
 
   });
 })
@@ -97,7 +97,7 @@ $(document).ready(function() {
         {% if calculation_success == True %}
           <br/>
           <ul id="messages">
-            <li>The calculation for {{input1}} {{operation}} {{input2}} is: {{result}}</li>
+            <li id="calculation">The calculation for {{input1}} {{operation}} {{input2}} is: {{result}}</li>
           </ul>
         {% endif %}
         {% if calculation_success == False %}
