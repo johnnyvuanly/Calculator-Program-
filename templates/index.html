@@ -36,7 +36,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
   // First connect your server
-  var socket = io.connect('http://127.0.0.1:5000');
+  var socket = io.connect('https://young-caverns-62982.herokuapp.com/');
   // socket.on means we are listening for a certain event, whenever you first connect to the server
   socket.on('connect', function() {
     socket.send('User has connected!');
